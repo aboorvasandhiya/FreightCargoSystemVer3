@@ -83,9 +83,18 @@ void Scheduler::editFreight(const string& id) {
     for (auto& f : freights) {
         if (f.getId() == id) {
             string dest, time;
-            cout << "New destination: "; cin >> dest;
-            cout << "New refuel time: "; cin >> time;
+            cin.ignore(); // jus to make sure getline works if need
+
+            cout << "New destination (leave blank to keep \"" << f.getDestination() << "\"): ";
+            getline(cin, dest);
+            if (dest.empty()) dest = f.getDestination();
+
+            cout << "New refuel time (leave blank to keep \"" << f.getTime() << "\"): ";
+            getline(cin, time);
+            if (time.empty()) time = f.getTime();
+
             f = Freight(id, dest, time);
+            cout << "Freight updated successfully.\n";
             return;
         }
     }
@@ -105,9 +114,18 @@ void Scheduler::editCargo(const string& id) {
     for (auto& c : cargos) {
         if (c.getId() == id) {
             string dest, time;
-            cout << "New destination: "; cin >> dest;
-            cout << "New arrival time: "; cin >> time;
+            cin.ignore(); // jus to make sure getline works if need
+
+            cout << "New destination (leave blank to keep \"" << c.getDestination() << "\"): ";
+            getline(cin, dest);
+            if (dest.empty()) dest = c.getDestination();
+
+            cout << "New arrival time (leave blank to keep \"" << c.getTime() << "\"): ";
+            getline(cin, time);
+            if (time.empty()) time = c.getTime();
+
             c = Cargo(id, dest, time);
+            cout << "Cargo updated successfully.\n";
             return;
         }
     }
