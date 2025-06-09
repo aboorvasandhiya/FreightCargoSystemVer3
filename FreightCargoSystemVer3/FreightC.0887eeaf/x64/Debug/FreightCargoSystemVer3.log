@@ -1,4 +1,8 @@
-﻿  Scheduler.cpp
+﻿  Cargo.cpp
+  Freight.cpp
   main.cpp
+  Scheduler.cpp
+  Transport.cpp
   Generating Code...
-  FreightCargoSystemVer3.vcxproj -> C:\Users\aliya\VisualStudios2022\source\repos\FreightCargoSystemVer3\x64\Debug\FreightCargoSystemVer3.exe
+  LINK : C:\Users\aliya\VisualStudios2022\source\repos\FreightCargoSystemVer3\FreightCargoSystemVer3\x64\Debug\FreightCargoSystemVer3.exe not found or not built by the last incremental link; performing full link
+  FreightCargoSystemVer3.vcxproj -> C:\Users\aliya\VisualStudios2022\source\repos\FreightCargoSystemVer3\FreightCargoSystemVer3\x64\Debug\FreightCargoSystemVer3.exe

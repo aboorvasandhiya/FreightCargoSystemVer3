@@ -4,13 +4,13 @@
 #include "Scheduler.h"
 using namespace std;
 
-// ✅ Manual file existence check (cross-platform)
+
 bool fileExists(const string& name) {
     ifstream f(name);
     return f.good();
 }
 
-// ✅ Create sample data files if not present
+
 void createSampleFiles() {
     if (!fileExists("freights.txt")) {
         ofstream fout("freights.txt");
@@ -31,6 +31,7 @@ void createSampleFiles() {
     }
 }
 
+
 void showMenu() {
     cout << "\n===== International Freight Cargo Scheduler =====\n";
     cout << "1. Display All Freights\n";
@@ -44,9 +45,6 @@ void showMenu() {
     cout << "9. Delete Freight by ID\n";
     cout << "10. Delete Cargo by ID\n";
     cout << "11. Exit\n";
-
-
-    //cout << "Select an option: ";
 }
 
 void printFreightHeader() {
