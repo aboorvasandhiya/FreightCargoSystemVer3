@@ -37,5 +37,7 @@ public:
     void deleteFreightById(const string& id);
     void deleteCargoById(const string& id);
 
+    const vector<Freight>& getFreights() const { return freights; }
+    const vector<Cargo>& getCargos() const { return cargos; }
 
 };

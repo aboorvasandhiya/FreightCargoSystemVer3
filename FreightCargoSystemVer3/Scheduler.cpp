@@ -68,7 +68,7 @@ void Scheduler::displayUnassigned() const {
 
 void Scheduler::saveSchedule(const string& filePath) const {
     ofstream file(filePath);
-    file << "FreightID -> CargoID\n";
+    file << "# Format: FreightID -> CargoID\n";
     for (auto& pair : assignments) {
         file << pair.first << " -> " << pair.second << "\n";
     }

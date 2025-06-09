@@ -15,8 +15,8 @@ void createSampleFiles() {
     if (!fileExists("freights.txt")) {
         ofstream fout("freights.txt");
         fout << "F01,London,0730\n";
-        //fout << "F02,Paris,1720\n";
-        //fout << "F03,Tokyo,1200\n";
+        fout << "F02,Paris,1720\n";
+        fout << "F03,Tokyo,1200\n";
         fout.close();
         cout << "Created freights.txt with sample data.\n";
     }
@@ -24,8 +24,8 @@ void createSampleFiles() {
     if (!fileExists("cargos.txt")) {
         ofstream fout("cargos.txt");
         fout << "C05,London,0730\n";
-        //fout << "C07,Paris,1720\n";
-        //fout << "C09,New York,1400\n";
+        fout << "C07,Paris,1720\n";
+        fout << "C09,New York,1400\n";
         fout.close();
         cout << "Created cargos.txt with sample data.\n";
     }
@@ -44,7 +44,9 @@ void showMenu() {
     cout << "8. Save All Freights and Cargos to File\n";
     cout << "9. Delete Freight by ID\n";
     cout << "10. Delete Cargo by ID\n";
-    cout << "11. Exit\n";
+    cout << "11. Edit Freight by ID\n";
+    cout << "12. Edit Cargo by ID\n";
+    cout << "13. Exit\n";
 }
 
 void printFreightHeader() {
@@ -69,11 +71,11 @@ int main() {
     Scheduler scheduler;
     scheduler.loadFreights("freights.txt");
     scheduler.loadCargos("cargos.txt");
-    showMenu();
+    
 
     int option;
     do {
-        //showMenu();
+        showMenu();
         cout << "\nSelect an option: ";
         cin >> option;
         cin.ignore();
@@ -103,6 +105,27 @@ int main() {
             getline(cin, dest);
             cout << "Enter Refuel Time (HHMM): ";
             getline(cin, time);
+
+            // check if any of the fields are empty
+            if (id.empty() || dest.empty() || time.empty()) {
+                cout << "Invalid input: all fields must be filled.\n";
+                break;
+            }
+            
+            // check if the freight's ID exists already
+            bool exists = false;
+            for (const auto& f : scheduler.getFreights()) {
+                if (f.getId() == id) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) {
+                cout << "Freight ID already exists";
+                break;
+            }
+
+
             scheduler.addFreight(Freight(id, dest, time));
             break;
         }
@@ -115,6 +138,27 @@ int main() {
             getline(cin, dest);
             cout << "Enter Arrival Time (HHMM): ";
             getline(cin, time);
+
+            // check if any of the fields are empty
+            if (id.empty() || dest.empty() || time.empty()) {
+                cout << "Invalid input: all fields must be filled.\n";
+                break;
+            }
+
+            // check if the freight's ID exists already
+            bool exists = false;
+            for (const auto& f : scheduler.getCargos()) {
+                if (f.getId() == id) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) {
+                cout << "Cargo ID already exists";
+                break;
+            }
+
+
             scheduler.addCargo(Cargo(id, dest, time));
             break;
         }
@@ -145,7 +189,23 @@ int main() {
             scheduler.deleteCargoById(id);
             break;
         }
-        case 11:
+        case 11: {
+            string id;
+            scheduler.displayAllFreights();
+            cout << "Enter Freight ID to edit: ";
+            getline(cin, id);
+            scheduler.editFreight(id);
+            break;
+        }
+        case 12: {
+            string id;
+            scheduler.displayAllCargos();
+            cout << "Enter Cargo ID to edit: ";
+            getline(cin, id);
+            scheduler.editCargo(id);
+            break;
+        }
+        case 13:
             cout << "Exiting program.\n";
             break;
 
