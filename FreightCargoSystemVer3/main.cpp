@@ -50,11 +50,11 @@ void showMenu() {
 }
 
 void printFreightHeader() {
-    cout << "\n--- FREIGHT DATA FORMAT ---\n"
-        << "Each freight requires to reach its specific airport stop for refuelling.\n"
-        << "• Name of the freight, e.g. F01, F02, F03, etc.\n"
-        << "• Specific refuel stops, e.g., London, Paris, New York, Bangkok, etc.\n"
-        << "• Time for the refuelling, e.g. 0700, 0900, 1530, etc.\n\n";
+    cout << "\n--- FREIGHT DATA FORMAT ---\n\n"
+        << "Each freight requires to reach its specific airport stop for refuelling.\n\n"
+        << ".Name of the freight, e.g. F01, F02, F03, etc.\n"
+        << ".Specific refuel stops, e.g., London, Paris, New York, Bangkok, etc.\n"
+        << ".Time for the refuelling, e.g. 0700, 0900, 1530, etc.\n\n";
 }
 
 void printCargoHeader() {
