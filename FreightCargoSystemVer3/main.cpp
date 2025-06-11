@@ -58,11 +58,11 @@ void printFreightHeader() {
 }
 
 void printCargoHeader() {
-    cout << "\n--- CARGO DATA FORMAT ---\n"
-        << "Each cargo requires to reach its destination by its required time.\n"
-        << "• Name of the cargo, e.g. C01, C02, C03, etc.\n"
-        << "• Cargo destinations, e.g., London, Paris, New York, Bangkok, etc.\n"
-        << "• Cargo time to reach destination, e.g., 0700, 0900, 1500, etc.\n\n";
+    cout << "\n--- CARGO DATA FORMAT ---\n\n"
+        << "Each cargo requires to reach its destination by its required time.\n\n"
+        << ".Name of the cargo, e.g. C01, C02, C03, etc.\n"
+        << ".Cargo destinations, e.g., London, Paris, New York, Bangkok, etc.\n"
+        << ".Cargo time to reach destination, e.g., 0700, 0900, 1500, etc.\n\n";
 }
 
 int main() {
