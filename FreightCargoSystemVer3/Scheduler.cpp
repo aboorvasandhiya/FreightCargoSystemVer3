@@ -14,7 +14,33 @@ void Scheduler::loadFreights(const string& filePath) {
         getline(ss, id, ',');
         getline(ss, dest, ',');
         getline(ss, time, ',');
-        freights.push_back(Freight(id, dest, time));
+        bool valid = id.length() >= 2 && id[0] == 'F';
+        if (valid) {
+            for (size_t i = 1; i < id.length(); ++i) {
+                if (!isdigit(id[i])) {
+                    valid = false;
+                    break;
+                }
+            }
+        }
+        bool exists = false;
+        if (valid) {
+            for (const auto& f : freights) {
+                if (f.getId() == id) {
+                    exists = true;
+                    break;
+                }
+            }
+        }
+        if (valid && !exists) {
+            freights.push_back(Freight(id, dest, time));
+        }
+        else if (!valid) {
+            cout << "Skipping invalid Freight ID: " << id << " in " << filePath << "\n";
+        }
+        else {
+            cout << "Skipping duplicate Freight ID: " << id << " in " << filePath << "\n";
+        }
     }
     file.close();
 }

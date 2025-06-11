@@ -97,69 +97,179 @@ int main() {
             scheduler.displayUnassigned();
             break;
         case 5: {
-            string id, dest, time;
-            printFreightHeader();
-            cout << "Enter Freight ID: ";
-            getline(cin, id);
-            cout << "Enter Refuel Stop: ";
-            getline(cin, dest);
-            cout << "Enter Refuel Time (HHMM): ";
-            getline(cin, time);
+            bool validInput = false;
+            do{
+                string id, dest, time;
+                printFreightHeader();
+                cout << "Enter Freight ID: ";
+                getline(cin, id);
+                cout << "Enter Refuel Stop: ";
+                getline(cin, dest);
+                cout << "Enter Refuel Time (HHMM): ";
+                getline(cin, time);
 
-            // check if any of the fields are empty
-            if (id.empty() || dest.empty() || time.empty()) {
-                cout << "Invalid input: all fields must be filled.\n";
-                break;
-            }
-            
-            // check if the freight's ID exists already
-            bool exists = false;
-            for (const auto& f : scheduler.getFreights()) {
-                if (f.getId() == id) {
-                    exists = true;
+                // check if any of the fields are empty
+                if (id.empty() || dest.empty() || time.empty()) {
+                    cout << "Invalid input: all fields must be filled.\n";
                     break;
                 }
-            }
-            if (exists) {
-                cout << "Freight ID already exists";
-                break;
-            }
+                else {
+                    // check if the freight's ID is valid and exists already
+                    bool valid = id.length() >= 2 && id[0] == 'F';
+                    if (valid) {
+                        for (size_t i = 1; i < id.length(); ++i) {
+                            if (!isdigit(id[i])) {
+                                valid = false;
+                                break;
+                            }
+                        }
+                    }
+                    bool exists = false;
+                    if (valid) {
+                        for (const auto& f : scheduler.getFreights()) {
+                            if (f.getId() == id) {
+                                exists = true;
+                                break;
+                            }
+                        }
+                    }
+                    // check if the time is in valid 24-hour format
+                    bool validTime = time.length() == 4; // Must be exactly 4 digits
+                    if (validTime) {
+                        for (size_t i = 0; i < time.length(); ++i) {
+                            if (!isdigit(time[i])) {
+                                validTime = false;
+                                break;
+                            }
+                        }
+                        if (validTime) {
+                            int hour = stoi(time.substr(0, 2));
+                            int minute = stoi(time.substr(2, 2));
+                            validTime = (hour >= 0 && hour <= 23) && (minute >= 0 && minute <= 59);
+                        }
+                    }
 
-
-            scheduler.addFreight(Freight(id, dest, time));
+                    if (!valid) {
+                        cout << "\n----------------------------------------------\n";
+                        cout << "\nInvalid Freight ID: Must start with 'F' followed by digits (e.g., F01, F10, F100, F1000).\n";
+                    }
+                    else if (exists) {
+                        cout << "\n----------------------------------------------\n";
+                        cout << "\nFreight ID already exists.\n";
+                    }
+                    else if (!validTime) {
+                        cout << "\n----------------------------------------------\n";
+                        cout << "\nInvalid Arrival Time: Must be 4 digits in 24-hour format (0000-2359).\n";
+                    }
+                    else {
+                        scheduler.addFreight(Freight(id, dest, time));
+                        cout << "\nFreight added successfully.\n";
+                        validInput = true;
+                    }
+                }
+                if (!validInput) {
+                    cout << "Would you like to:\n\n";
+                    cout << "1. Re-enter details\n";
+                    cout << "2. Return to main menu\n\n";
+                    cout << "Enter choice (1 or 2): ";
+                    int choice;
+                    cin >> choice;
+                    cin.ignore(); // Clear the newline character
+                    if (choice != 1) {
+                        break; // Return to main menu if not 1
+                    }
+                }
+            } while (!validInput);
             break;
         }
+
+            
+           
         case 6: {
-            string id, dest, time;
-            printCargoHeader();
-            cout << "Enter Cargo ID: ";
-            getline(cin, id);
-            cout << "Enter Destination: ";
-            getline(cin, dest);
-            cout << "Enter Arrival Time (HHMM): ";
-            getline(cin, time);
+            bool validInput = false;
+            do {
+                string id, dest, time;
+                printCargoHeader();
+                cout << "Enter Cargo ID: ";
+                getline(cin, id);
+                cout << "Enter Destination: ";
+                getline(cin, dest);
+                cout << "Enter Arrival Time (HHMM): ";
+                getline(cin, time);
 
-            // check if any of the fields are empty
-            if (id.empty() || dest.empty() || time.empty()) {
-                cout << "Invalid input: all fields must be filled.\n";
-                break;
-            }
-
-            // check if the freight's ID exists already
-            bool exists = false;
-            for (const auto& f : scheduler.getCargos()) {
-                if (f.getId() == id) {
-                    exists = true;
-                    break;
+                // check if any of the fields are empty
+                if (id.empty() || dest.empty() || time.empty()) {
+                    cout << "Invalid input: all fields must be filled.\n";
                 }
-            }
-            if (exists) {
-                cout << "Cargo ID already exists";
-                break;
-            }
+                else {
+                    // check if the cargo's ID is valid and exists already
+                    bool valid = id.length() >= 2 && id[0] == 'C';
+                    if (valid) {
+                        for (size_t i = 1; i < id.length(); ++i) {
+                            if (!isdigit(id[i])) {
+                                valid = false;
+                                break;
+                            }
+                        }
+                    }
+                    bool exists = false;
+                    if (valid) {
+                        for (const auto& f : scheduler.getCargos()) {
+                            if (f.getId() == id) {
+                                exists = true;
+                                break;
+                            }
+                        }
+                    }
 
+                    // check if the time is in valid 24-hour format
+                    bool validTime = time.length() == 4; // Must be exactly 4 digits
+                    if (validTime) {
+                        for (size_t i = 0; i < time.length(); ++i) {
+                            if (!isdigit(time[i])) {
+                                validTime = false;
+                                break;
+                            }
+                        }
+                        if (validTime) {
+                            int hour = stoi(time.substr(0, 2));
+                            int minute = stoi(time.substr(2, 2));
+                            validTime = (hour >= 0 && hour <= 23) && (minute >= 0 && minute <= 59);
+                        }
+                    }
 
-            scheduler.addCargo(Cargo(id, dest, time));
+                    if (!valid) {
+                        cout << "\n----------------------------------------------\n";
+                        cout << "\nInvalid Cargo ID: Must start with 'C' followed by digits (e.g., C01, C10, C100, C1000).\n";
+                    }
+                    else if (exists) {
+                        cout << "\n----------------------------------------------\n";
+                        cout << "\nCargo ID already exists.\n";
+                    }
+                    else if (!validTime) {
+                        cout << "\n----------------------------------------------\n";
+                        cout << "\nInvalid Refuel Time: Must be 4 digits in 24-hour format (0000-2359).\n";
+                    }
+                    else {
+                        scheduler.addCargo(Cargo(id, dest, time));
+                        cout << "Cargo added successfully.\n";
+                        validInput = true;
+                    }
+                }
+
+                if (!validInput) {
+                    cout << "Would you like to:\n\n";
+                    cout << "1. Re-enter details\n";
+                    cout << "2. Return to main menu\n\n";
+                    cout << "Enter choice (1 or 2): ";
+                    int choice;
+                    cin >> choice;
+                    cin.ignore(); // Clear the newline character
+                    if (choice != 1) {
+                        break; // Return to main menu if not 1
+                    }
+                }
+            } while (!validInput);
             break;
         }
         case 7:
