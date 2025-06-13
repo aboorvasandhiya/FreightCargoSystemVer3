@@ -14,20 +14,50 @@ void CargoManager::loadFromFile(const string& filePath) {
         getline(ss, id, ',');
         getline(ss, dest, ',');
         getline(ss, time, ',');
-        cargos.emplace_back(id, dest, time);
+        cargos.push_back(Cargo(id, dest, time));
     }
     file.close();
 }
 
 void CargoManager::saveToFile(const string& filePath) const {
-    ofstream file(filePath);
-    for (const auto& c : cargos)
-        file << c.toCSV() << "\n";
-    file.close();
+    ofstream fout(filePath);
+    for (const auto& c : cargos) {
+        fout << c.toCSV() << "\n";
+    }
+    fout.close();
 }
 
 void CargoManager::add(const Cargo& cargo) {
-    cargos.push_back(cargo);
+    bool valid = cargo.getId().length() >= 2 && cargo.getId()[0] == 'C';
+    if (valid) {
+        for (size_t i = 1; i < cargo.getId().length(); ++i) {
+            if (!isdigit(cargo.getId()[i])) {
+                valid = false;
+                break;
+            }
+        }
+    }
+    bool exists = false;
+    if (valid) {
+        for (const auto& c : cargos) {
+            if (c.getId() == cargo.getId()) {
+                exists = true;
+                break;
+            }
+        }
+    }
+    if (valid && !exists) {
+        cargos.push_back(cargo);
+        cout << "Cargo added successfully.\n";
+    }
+    else if (!valid) {
+        cout << "\n----------------------------------------------\n";
+        cout << "\nInvalid Cargo ID: Must start with 'C' followed by digits (e.g., C01, C10, C100, C1000).\n";
+    }
+    else {
+        cout << "\n----------------------------------------------\n";
+        cout << "\nCargo ID already exists.\n";
+    }
 }
 
 void CargoManager::edit(const string& id) {
@@ -40,6 +70,27 @@ void CargoManager::edit(const string& id) {
 
             cout << "New arrival time (leave blank to keep \"" << c.getTime() << "\"): ";
             getline(cin, time);
+            if (!time.empty()) {
+                bool validTime = time.length() == 4;
+                if (validTime) {
+                    for (size_t i = 0; i < time.length(); ++i) {
+                        if (!isdigit(time[i])) {
+                            validTime = false;
+                            break;
+                        }
+                    }
+                    if (validTime) {
+                        int hour = stoi(time.substr(0, 2));
+                        int minute = stoi(time.substr(2, 2));
+                        validTime = (hour >= 0 && hour <= 23) && (minute >= 0 && minute <= 59);
+                    }
+                }
+                if (!validTime) {
+                    cout << "\n----------------------------------------------\n";
+                    cout << "\nInvalid Arrival Time: Must be 4 digits in 24-hour format (0000-2359).\n";
+                    return;
+                }
+            }
             if (time.empty()) time = c.getTime();
 
             c = Cargo(id, dest, time);
@@ -56,7 +107,7 @@ void CargoManager::remove(const string& id) {
         });
     if (it != cargos.end()) {
         cargos.erase(it, cargos.end());
-        cout << "Cargo " << id << " removed successfully.\n";
+        cout << "Cargo " << id << " deleted successfully.\n";
     }
     else {
         cout << "Cargo ID not found.\n";
