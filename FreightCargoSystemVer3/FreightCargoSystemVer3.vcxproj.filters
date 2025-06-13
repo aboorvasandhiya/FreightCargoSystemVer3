@@ -30,6 +30,12 @@
     <ClInclude Include="SaveToFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FreightManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CargoManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +51,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Transport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FreightManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CargoManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

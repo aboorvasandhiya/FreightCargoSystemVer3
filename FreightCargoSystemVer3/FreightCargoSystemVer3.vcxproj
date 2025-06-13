@@ -128,14 +128,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Cargo.h" />
+    <ClInclude Include="CargoManager.h" />
     <ClInclude Include="Freight.h" />
+    <ClInclude Include="FreightManager.h" />
     <ClInclude Include="SaveToFile.h" />
     <ClInclude Include="Scheduler.h" />
     <ClInclude Include="Transport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cargo.cpp" />
+    <ClCompile Include="CargoManager.cpp" />
     <ClCompile Include="Freight.cpp" />
+    <ClCompile Include="FreightManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Transport.cpp" />
