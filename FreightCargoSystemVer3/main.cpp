@@ -45,7 +45,9 @@ void showMenu() {
     cout << setw(2) << 10 << ". Save All Freights and Cargos to File\n";
     cout << setw(2) << 11 << ". Delete Freight by ID\n";
     cout << setw(2) << 12 << ". Delete Cargo by ID\n";
-    cout << setw(2) << 13 << ". Exit\n";
+    cout << setw(2) << 13 << ". Undo Last Deleted Freight\n";
+    cout << setw(2) << 14 << ". Undo Last Deleted Cargo\n";
+    cout << setw(2) << 15 << ". Exit\n";
 }
 
 void printFreightHeader() {
@@ -315,13 +317,21 @@ int main() {
             cargoManager.remove(id);
             break;
         }
-        case 13:
+        case 13: {
+            freightManager.undoDelete();
+            break;
+        }
+        case 14: {
+            cargoManager.undoDelete();
+            break;
+        }
+        case 15:
             cout << "Exiting program.\n";
             break;
         default:
             cout << "Invalid option. Try again.\n";
         }
-    } while (option != 13);
+    } while (option != 15);
 
     return 0;
 }

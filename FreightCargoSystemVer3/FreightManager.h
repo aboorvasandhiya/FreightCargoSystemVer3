@@ -7,6 +7,7 @@ using namespace std;
 class FreightManager {
 private:
     vector<Freight> freights;
+    Freight* lastDeletedFreight = nullptr;
 
 public:
     void loadFromFile(const string& filePath);
@@ -18,4 +19,6 @@ public:
     void displayAll() const;
 
     const vector<Freight>& getAll() const;
+
+    void undoDelete();
 };

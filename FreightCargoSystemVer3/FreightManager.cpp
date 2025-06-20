@@ -128,17 +128,30 @@ void FreightManager::edit(const string& id) {
 }
 
 void FreightManager::remove(const string& id) {
-    auto it = remove_if(freights.begin(), freights.end(), [&](const Freight& f) {
-        return f.getId() == id;
-        });
-    if (it != freights.end()) {
-        freights.erase(it, freights.end());
-        cout << "Freight " << id << " deleted successfully.\n";
+    for (auto it = freights.begin(); it != freights.end(); ++it) {
+        if (it->getId() == id) {
+            if (lastDeletedFreight) delete lastDeletedFreight;
+            lastDeletedFreight = new Freight(*it);
+            freights.erase(it);
+            cout << "Freight " << id << " deleted successfully.\n";
+            return;
+        }
+    }
+    cout << "Freight ID not found.\n";
+}
+
+void FreightManager::undoDelete() {
+    if (lastDeletedFreight) {
+        freights.push_back(*lastDeletedFreight);
+        delete lastDeletedFreight;
+        lastDeletedFreight = nullptr;
+        cout << "Last deleted freight restored.\n";
     }
     else {
-        cout << "Freight ID not found.\n";
+        cout << "No freight to undo.\n";
     }
 }
+
 
 void FreightManager::displayAll() const {
     cout << left << setw(10) << "ID" << setw(15) << "Refuel Stop" << "Refuel Time\n";

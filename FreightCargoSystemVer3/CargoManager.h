@@ -7,6 +7,7 @@ using namespace std;
 class CargoManager {
 private:
     vector<Cargo> cargos;
+    Cargo* lastDeletedCargo = nullptr;
 
 public:
     void loadFromFile(const string& filePath);
@@ -18,4 +19,6 @@ public:
     void displayAll() const;
 
     const vector<Cargo>& getAll() const;
+
+    void undoDelete();
 };

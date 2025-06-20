@@ -102,17 +102,30 @@ void CargoManager::edit(const string& id) {
 }
 
 void CargoManager::remove(const string& id) {
-    auto it = remove_if(cargos.begin(), cargos.end(), [&](const Cargo& c) {
-        return c.getId() == id;
-        });
-    if (it != cargos.end()) {
-        cargos.erase(it, cargos.end());
-        cout << "Cargo " << id << " deleted successfully.\n";
+    for (auto it = cargos.begin(); it != cargos.end(); ++it) {
+        if (it->getId() == id) {
+            if (lastDeletedCargo) delete lastDeletedCargo;
+            lastDeletedCargo = new Cargo(*it);
+            cargos.erase(it);
+            cout << "Cargo " << id << " deleted successfully.\n";
+            return;
+        }
+    }
+    cout << "Cargo ID not found.\n";
+}
+
+void CargoManager::undoDelete() {
+    if (lastDeletedCargo) {
+        cargos.push_back(*lastDeletedCargo);
+        delete lastDeletedCargo;
+        lastDeletedCargo = nullptr;
+        cout << "Last deleted cargo restored.\n";
     }
     else {
-        cout << "Cargo ID not found.\n";
+        cout << "No cargo to undo.\n";
     }
 }
+
 
 void CargoManager::displayAll() const {
     cout << left << setw(10) << "ID" << setw(15) << "Destination" << "Arrival Time\n";
