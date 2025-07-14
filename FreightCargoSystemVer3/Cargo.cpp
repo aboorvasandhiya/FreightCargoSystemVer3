@@ -1,14 +1,27 @@
 #include "Cargo.h"
 #include <iostream>
-#include <iomanip>
+using namespace std;
 
-Cargo::Cargo(string id, string destination, string arrivalTime)
-    : Transport(id, destination, arrivalTime) {}
+Cargo::Cargo() : Transport(), groupSize(1) {}
+
+Cargo::Cargo(const string& id, const string& dest, const string& time, int groupSize)
+    : Transport(id, dest, time), groupSize(groupSize) {}
+
+int Cargo::getGroupSize() const {
+    return groupSize;
+}
+
+void Cargo::setGroupSize(int size) {
+    groupSize = size;
+}
 
 void Cargo::display() const {
-    cout << left << setw(10) << id << setw(15) << destination << time << '\n';
+    cout << "Cargo ID: " << getId()
+        << ", Destination: " << getDestination()
+        << ", Time: " << getTime()
+        << ", Group Size: " << groupSize << endl;
 }
 
 string Cargo::toCSV() const {
-    return id + "," + destination + "," + time;
+    return getId() + "," + getDestination() + "," + getTime() + "," + to_string(groupSize);
 }

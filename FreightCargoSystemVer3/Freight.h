@@ -1,12 +1,22 @@
 #pragma once
 #include "Transport.h"
-#include "SaveToFile.h"
-class Cargo; // forward declaration
+#include "Cargo.h"
+#include <string>
 
-class Freight : public Transport, public SavableToFile {
+class Freight : public Transport {
+private:
+    std::string freightType;
+    int maxCapacity;
+
 public:
-    Freight(string id, string destination, string refuelTime);
-    bool matches(const Cargo& cargo) const;
+    Freight();
+    Freight(const std::string& id, const std::string& dest, const std::string& time, const std::string& type);
+
+    std::string getFreightType() const;
+    int getMaxCapacity() const;
+
     void display() const override;
-    string toCSV() const override;
+    std::string toCSV() const override;
+
+    bool matches(const Cargo& c) const;
 };

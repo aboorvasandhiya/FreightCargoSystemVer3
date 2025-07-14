@@ -2,125 +2,56 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <iomanip>
-#include <algorithm>
+using namespace std;
 
 void FreightManager::loadFromFile(const string& filePath) {
-    ifstream file(filePath);
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string id, dest, time;
-        getline(ss, id, ',');
-        getline(ss, dest, ',');
-        getline(ss, time, ',');
-        bool valid = id.length() >= 2 && id[0] == 'F';
-        if (valid) {
-            for (size_t i = 1; i < id.length(); ++i) {
-                if (!isdigit(id[i])) {
-                    valid = false;
-                    break;
-                }
-            }
-        }
-        bool exists = false;
-        if (valid) {
-            for (const auto& f : freights) {
-                if (f.getId() == id) {
-                    exists = true;
-                    break;
-                }
-            }
-        }
-        if (valid && !exists) {
-            freights.push_back(Freight(id, dest, time));
-        }
-        else if (!valid) {
-            cout << "Skipping invalid Freight ID: " << id << " in " << filePath << "\n";
-        }
-        else {
-            cout << "Skipping duplicate Freight ID: " << id << " in " << filePath << "\n";
-        }
+    ifstream fin(filePath);
+    if (!fin.is_open()) {
+        cout << "Could not open file: " << filePath << endl;
+        return;
     }
-    file.close();
+
+    string line;
+    while (getline(fin, line)) {
+        stringstream ss(line);
+        string id, destination, time, type;
+        getline(ss, id, ',');
+        getline(ss, destination, ',');
+        getline(ss, time, ',');
+        getline(ss, type, ',');
+        Freight f(id, destination, time, type);
+        freights.push_back(f);
+    }
+
+    fin.close();
+    cout << "Freight data loaded.\n";
 }
 
-void FreightManager::saveToFile(const string& filePath) const {
+void FreightManager::saveToFile(const string& filePath) {
     ofstream fout(filePath);
-    for (const auto& f : freights) {
-        fout << f.toCSV() << "\n";
+    for (const Freight& f : freights) {
+        fout << f.toCSV() << endl;
     }
     fout.close();
 }
 
-void FreightManager::add(const Freight& freight) {
-    bool valid = freight.getId().length() >= 2 && freight.getId()[0] == 'F';
-    if (valid) {
-        for (size_t i = 1; i < freight.getId().length(); ++i) {
-            if (!isdigit(freight.getId()[i])) {
-                valid = false;
-                break;
-            }
-        }
-    }
-    bool exists = false;
-    if (valid) {
-        for (const auto& f : freights) {
-            if (f.getId() == freight.getId()) {
-                exists = true;
-                break;
-            }
-        }
-    }
-    if (valid && !exists) {
-        freights.push_back(freight);
-        cout << "Freight added successfully.\n";
-    }
-    else if (!valid) {
-        cout << "\n----------------------------------------------\n";
-        cout << "\nInvalid Freight ID: Must start with 'F' followed by digits (e.g., F01, F10, F100, F1000).\n";
-    }
-    else {
-        cout << "\n----------------------------------------------\n";
-        cout << "\nFreight ID already exists.\n";
-    }
+void FreightManager::add(const Freight& f) {
+    freights.push_back(f);
+    cout << "Freight added.\n";
 }
 
 void FreightManager::edit(const string& id) {
-    for (auto& f : freights) {
+    for (Freight& f : freights) {
         if (f.getId() == id) {
-            string dest, time;
-            cout << "New destination (leave blank to keep \"" << f.getDestination() << "\"): ";
+            string dest, time, type;
+            cout << "Enter new destination: ";
             getline(cin, dest);
-            if (dest.empty()) dest = f.getDestination();
-
-            cout << "New refuel time (leave blank to keep \"" << f.getTime() << "\"): ";
+            cout << "Enter new time (HHMM): ";
             getline(cin, time);
-            if (!time.empty()) {
-                bool validTime = time.length() == 4;
-                if (validTime) {
-                    for (size_t i = 0; i < time.length(); ++i) {
-                        if (!isdigit(time[i])) {
-                            validTime = false;
-                            break;
-                        }
-                    }
-                    if (validTime) {
-                        int hour = stoi(time.substr(0, 2));
-                        int minute = stoi(time.substr(2, 2));
-                        validTime = (hour >= 0 && hour <= 23) && (minute >= 0 && minute <= 59);
-                    }
-                }
-                if (!validTime) {
-                    cout << "\n----------------------------------------------\n";
-                    cout << "\nInvalid Refuel Time: Must be 4 digits in 24-hour format (0000-2359).\n";
-                    return;
-                }
-            }
-            if (time.empty()) time = f.getTime();
-
-            f = Freight(id, dest, time);
-            cout << "Freight updated successfully.\n";
+            cout << "Enter new freight type: ";
+            getline(cin, type);
+            f = Freight(id, dest, time, type);
+            cout << "Freight updated.\n";
             return;
         }
     }
@@ -133,11 +64,21 @@ void FreightManager::remove(const string& id) {
             if (lastDeletedFreight) delete lastDeletedFreight;
             lastDeletedFreight = new Freight(*it);
             freights.erase(it);
-            cout << "Freight " << id << " deleted successfully.\n";
+            cout << "Freight deleted.\n";
             return;
         }
     }
     cout << "Freight ID not found.\n";
+}
+
+void FreightManager::displayAll() const {
+    for (const Freight& f : freights) {
+        f.display();
+    }
+}
+
+std::vector<Freight>& FreightManager::getAll() {
+    return freights;
 }
 
 void FreightManager::undoDelete() {
@@ -150,16 +91,4 @@ void FreightManager::undoDelete() {
     else {
         cout << "No freight to undo.\n";
     }
-}
-
-
-void FreightManager::displayAll() const {
-    cout << left << setw(10) << "ID" << setw(15) << "Refuel Stop" << "Refuel Time\n";
-    cout << "----------------------------------------\n";
-    for (const auto& f : freights)
-        f.display();
-}
-
-const vector<Freight>& FreightManager::getAll() const {
-    return freights;
 }

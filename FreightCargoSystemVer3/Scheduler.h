@@ -1,20 +1,25 @@
 #pragma once
 #include "FreightManager.h"
 #include "CargoManager.h"
+#include "SchedulingStrategy.h"
 #include <map>
-using namespace std;
+#include <string>
 
 class Scheduler {
 private:
     FreightManager* freightManager;
     CargoManager* cargoManager;
-    map<string, string> assignments; // Freight ID -> Cargo ID
+    SchedulingStrategy* strategy = nullptr;
+
+    std::map<std::string, std::string> assignments;  // cargoID ? freightID
 
 public:
-    Scheduler(FreightManager* fm, CargoManager* cm);
+    Scheduler(FreightManager* f, CargoManager* c);
+    ~Scheduler();
 
+    void setStrategy(SchedulingStrategy* s);
     void generateSchedule();
     void displaySchedule() const;
     void displayUnassigned() const;
-    void saveSchedule(const string& filePath) const;
+    void saveSchedule(const std::string& filename) const;
 };

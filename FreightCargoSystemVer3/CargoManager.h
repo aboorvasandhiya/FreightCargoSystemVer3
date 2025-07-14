@@ -2,23 +2,19 @@
 #include "Cargo.h"
 #include <vector>
 #include <string>
-using namespace std;
 
 class CargoManager {
 private:
-    vector<Cargo> cargos;
+    std::vector<Cargo> cargos;
     Cargo* lastDeletedCargo = nullptr;
 
 public:
-    void loadFromFile(const string& filePath);
-    void saveToFile(const string& filePath) const;
-
-    void add(const Cargo& cargo);
-    void edit(const string& id);
-    void remove(const string& id);
+    void loadFromFile(const std::string& filePath);
+    void saveToFile(const std::string& filePath);
+    void add(const Cargo& c);
+    void edit(const std::string& id);
+    void remove(const std::string& id);
     void displayAll() const;
-
-    const vector<Cargo>& getAll() const;
-
+    std::vector<Cargo>& getAll();
     void undoDelete();
 };

@@ -1,18 +1,20 @@
 #pragma once
 #include <string>
-using namespace std;
 
 class Transport {
 protected:
-    string id;
-    string destination;
-    string time;
+    std::string id;
+    std::string destination;
+    std::string time;
 
 public:
-    Transport(string id, string destination, string time);
-    virtual void display() const = 0;
-    string getId() const { return id; }
-    string getDestination() const { return destination; }
-    string getTime() const { return time; }
-    virtual ~Transport() = default;
+    Transport();
+    Transport(const std::string& id, const std::string& destination, const std::string& time);
+
+    std::string getId() const;
+    std::string getDestination() const;
+    std::string getTime() const;
+
+    virtual void display() const;
+    virtual std::string toCSV() const;
 };
