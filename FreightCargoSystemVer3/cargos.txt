@@ -1,1 +1,10 @@
-C05,London,0730
+C01,London,0720,2
+C02,Paris,1715,1
+C03,Tokyo,1150,2
+C04,Berlin,0850,5
+C05,Rome,1020,3
+C06,Madrid,1450,1
+C07,Beijing,1950,7
+C08,Sydney,0550,4
+C09,Cairo,1130,2
+C10,New York,1820,6

@@ -11,7 +11,7 @@ private:
     CargoManager* cargoManager;
     SchedulingStrategy* strategy = nullptr;
 
-    std::map<std::string, std::string> assignments;  // cargoID ? freightID
+    std::map<std::string, std::string> assignments;  // cargoID -> freightID
 
 public:
     Scheduler(FreightManager* f, CargoManager* c);
@@ -21,5 +21,6 @@ public:
     void generateSchedule();
     void displaySchedule() const;
     void displayUnassigned() const;
+    void displayUnderCapacityFreights() const; 
     void saveSchedule(const std::string& filename) const;
 };

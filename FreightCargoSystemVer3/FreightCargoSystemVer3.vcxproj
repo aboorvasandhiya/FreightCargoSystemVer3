@@ -127,21 +127,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ArrivalTimeStrategy.h" />
     <ClInclude Include="Cargo.h" />
     <ClInclude Include="CargoManager.h" />
     <ClInclude Include="Freight.h" />
     <ClInclude Include="FreightManager.h" />
+    <ClInclude Include="InputUtils.h" />
+    <ClInclude Include="MinimizeFreightStrategy.h" />
     <ClInclude Include="SaveToFile.h" />
     <ClInclude Include="Scheduler.h" />
+    <ClInclude Include="SchedulingStrategy.h" />
     <ClInclude Include="Transport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArrivalTimeStrategy.cpp" />
     <ClCompile Include="Cargo.cpp" />
     <ClCompile Include="CargoManager.cpp" />
     <ClCompile Include="Freight.cpp" />
     <ClCompile Include="FreightManager.cpp" />
+    <ClCompile Include="InputUtils.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MinimizeFreightStrategy.cpp" />
     <ClCompile Include="Scheduler.cpp" />
+    <ClCompile Include="SchedulingStrategy.cpp" />
     <ClCompile Include="Transport.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
